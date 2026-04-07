@@ -1,8 +1,9 @@
 FROM openjdk:17-ea-33-slim-buster
 
-ARG VERSION="0.7.0"
-ARG PHOTON="photon-${VERSION}.jar"
-# FROM openjdk:${VERSION}
+ARG PHOTON_VERSION
+ENV PHOTON_VERSION=$PHOTON_VERSION
+
+ARG PHOTON="photon-${PHOTON_VERSION}.jar"
 
 RUN apt-get update && apt-get install -y wget bzip2 tar curl
 
@@ -13,6 +14,6 @@ RUN tar -xf  photon-db-dz-latest.tar.bz2
 RUN rm photon-db-dz-latest.tar.bz2
 
 WORKDIR /www
-RUN wget https://github.com/komoot/photon/releases/download/${VERSION}/photon-${VERSION}.jar -O app.jar
+RUN wget https://github.com/komoot/photon/releases/download/${PHOTON_VERSION}/photon-${PHOTON_VERSION}.jar -O app.jar
 
 ENTRYPOINT [ "java", "-jar", "app.jar","-data-dir","/var/data","-cors-any"]

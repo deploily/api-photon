@@ -1,4 +1,4 @@
-FROM openjdk:17-ea-33-slim-buster
+FROM openjdk:25-ea-33-slim-bookworm
 
 ARG PHOTON_VERSION
 ENV PHOTON_VERSION=$PHOTON_VERSION

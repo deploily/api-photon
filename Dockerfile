@@ -7,12 +7,11 @@ ARG PHOTON="photon-${PHOTON_VERSION}.jar"
 
 RUN apt-get update && apt-get install -y wget bzip2 tar curl
 
-WORKDIR /var/data/
+WORKDIR /www
 RUN wget https://download1.graphhopper.com/public/extracts/by-country-code/dz/photon-db-dz-250720.tar.bz2 \
     && tar -xf  photon-db-dz-250720.tar.bz2 \
     && rm photon-db-dz-250720.tar.bz2 
 
-WORKDIR /www
 RUN wget https://github.com/komoot/photon/releases/download/${PHOTON_VERSION}/photon-${PHOTON_VERSION}.jar -O app.jar
 
-ENTRYPOINT [ "java", "-jar", "app.jar","-data-dir","/var/data","-cors-any"]
+ENTRYPOINT ["java", "-jar", "app.jar", "-data-dir", "/www", "-cors-any"]

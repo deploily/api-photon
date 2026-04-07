@@ -15,4 +15,4 @@ RUN wget --progress=dot:giga -O - https://download1.graphhopper.com/public/afric
     | zstd -d --stdout \
     | java -jar app.jar import -import-file -
 
-ENTRYPOINT ["java", "-Xms2g", "-Xmx6g", "-jar", "app.jar", "serve", "-data-dir", "/www", "-cors-any", "-listen-ip", "0.0.0.0"]
+ENTRYPOINT ["java", "-jar", "app.jar", "serve", "-data-dir", "/www", "-cors-any", "-listen-ip", "0.0.0.0"]

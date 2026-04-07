@@ -1,18 +1,18 @@
-FROM openjdk:25-ea-33-slim-bookworm
+FROM eclipse-temurin:17-jre-noble
 
-ARG PHOTON_VERSION
-ENV PHOTON_VERSION=$PHOTON_VERSION
+ARG VERSION="0.7.0"
+ARG PHOTON="photon-${VERSION}.jar"
+# FROM openjdk:${VERSION}
 
-ARG PHOTON="photon-${PHOTON_VERSION}.jar"
+RUN apt-get update && apt-get install -y wget bzip2 tar curl
 
-RUN apt-get update && apt-get install -y wget pbzip2 tar curl zstd
+WORKDIR /var/data/
+RUN wget https://download1.graphhopper.com/public/extracts/by-country-code/dz/photon-db-dz-latest.tar.bz2
+
+RUN tar -xf  photon-db-dz-latest.tar.bz2 
+RUN rm photon-db-dz-latest.tar.bz2
 
 WORKDIR /www
+RUN wget https://github.com/komoot/photon/releases/download/${VERSION}/photon-${VERSION}.jar -O app.jar
 
-RUN wget --progress=dot:giga https://github.com/komoot/photon/releases/download/${PHOTON_VERSION}/photon-${PHOTON_VERSION}.jar -O app.jar
-
-RUN wget --progress=dot:giga -O - https://download1.graphhopper.com/public/africa/northern-africa/photon-dump-northern-africa-1.0-latest.jsonl.zst \
-    | zstd -d --stdout \
-    | java -jar app.jar import -import-file -
-
-ENTRYPOINT ["java", "-jar", "app.jar", "serve", "-data-dir", "/www", "-cors-any", "-listen-ip", "0.0.0.0"]
+ENTRYPOINT [ "java", "-jar", "app.jar","-data-dir","/var/data","-cors-any"]

@@ -4,7 +4,7 @@ ARG VERSION="0.7.0"
 ARG PHOTON="photon-${VERSION}.jar"
 # FROM openjdk:${VERSION}
 
-RUN apt-get update && apt-get install -y wget bzip2 tar curl
+RUN apt-get update && apt-get install -y wget bzip2 tar curl pbzip2
 
 WORKDIR /var/data/
 RUN wget --progress=dot:giga -O - https://download1.graphhopper.com/public/extracts/by-country-code/dz/photon-db-dz-250720.tar.bz2 | pbzip2 -cd | tar x 
